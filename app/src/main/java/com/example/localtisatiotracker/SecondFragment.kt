@@ -12,9 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class SecondFragment : Fragment() {
     private var locationId = mutableListOf<String>()
     private var location = mutableListOf<Double>()
@@ -52,5 +49,13 @@ class SecondFragment : Fragment() {
                     Log.w("getDocuments", "Error getting documents.", exception)
                 }
         return Triple(locationId,location,location2)
+    }
+
+    fun deleteDocument(documentId: String){
+        val db = Firebase.firestore
+        db.collection("Localisation").document(documentId)
+                .delete()
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
 }
