@@ -33,10 +33,11 @@ class RegisterActivity: AppCompatActivity() {
     }
 
     private fun registerUser() {
-        val binding = ActivityRegisterBinding.inflate(layoutInflater)
 
-        val email: String = binding.emailRegister.text.toString()
-        val pass: String = binding.passwordRegister.text.toString()
+        var email: String? = null
+        email = findViewById<EditText>(R.id.email_register).text.toString()
+        var pass: String? = null
+        pass = findViewById<EditText>(R.id.password_register).text.toString()
 
         when {
             email == "" -> {
@@ -70,6 +71,5 @@ class RegisterActivity: AppCompatActivity() {
                     }
             }
         }
-        setContentView(binding.root)
     }
 }
