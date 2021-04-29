@@ -1,17 +1,24 @@
 package com.example.localtisatiotracker
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
+    private var locationId = mutableListOf<String>()
+    private var location = mutableListOf<Double>()
+    private var location2 = mutableListOf<Double>()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -23,9 +30,27 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //locationId location location2 = getDocuments()
+    }
 
-        view.findViewById<Button>(R.id.button_second).setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
+    fun getDocuments(): Triple<MutableList<String>, MutableList<Double>, MutableList<Double>> {
+        var locationId = mutableListOf<String>()
+        var location = mutableListOf<Double>()
+        var location2 = mutableListOf<Double>()
+        val db = Firebase.firestore
+        db.collection("Localisation")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d("getDocuments", "${document.id} => ${document.data}")
+                        locationId.add(document.id)
+                        document.getString("Latitude")?.toDouble()?.let { location.add(it) }
+                        document.getString("Longitude")?.toDouble()?.let { location2.add(it) }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("getDocuments", "Error getting documents.", exception)
+                }
+        return Triple(locationId,location,location2)
     }
 }

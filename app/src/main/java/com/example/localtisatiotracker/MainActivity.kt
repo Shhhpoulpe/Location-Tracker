@@ -65,7 +65,8 @@ class MainActivity : AppCompatActivity() {
                             val db = Firebase.firestore
 
                             val localisation = hashMapOf(
-                                    "Position" to location,
+                                    "Latitude" to location.latitude,
+                                    "Longitude" to location.longitude,
                                     "Proprio" to 1
                             )
                             db.collection("Localisation")
