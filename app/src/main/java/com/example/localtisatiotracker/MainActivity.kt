@@ -21,6 +21,7 @@ import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
 
+    private val locationPermissionCode = 2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionCode)
         }
         locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
