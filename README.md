@@ -3,7 +3,7 @@
 # Objectfs faits :
 # 1- Crashanalytics done.
 # 2- Performance done.
-# 3- création des comptes sur Firebase et signin avec ces comptes (Authentification)
+# 3- création des comptes sur Firebase et signin avec ces comptes (Authentification) + login marche
 # 4- Sigin in avec des comptes crées du Firestore.(Authentification)
 # 5- fap "+" button botom right ajoute la location aprés login et enregistre dans les datas
 # 6- Geaolocalisation toutes les minutes enregistrées dans Firebase
