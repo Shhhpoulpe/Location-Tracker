@@ -53,4 +53,12 @@ class SecondFragment : Fragment() {
                 }
         return Triple(locationId,location,location2)
     }
+
+    fun deleteDocument(documentId: String){
+        val db = Firebase.firestore
+        db.collection("Localisation").document(documentId)
+            .delete()
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    }
 }
