@@ -15,6 +15,8 @@ import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import kotlin.math.ceil
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,48 +27,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            var isadded = 0
-
-            val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            }
-
-            locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    5000,
-                    0F,
-                    object : LocationListener {
-                        override fun onLocationChanged(location: Location) {
-                            if (isadded == 0){
-                                val db = Firebase.firestore
-
-                                val localisation = hashMapOf(
-                                        "Position" to location,
-                                        "Proprio" to 1
-                                )
-                                db.collection("Localisation")
-                                        .add(localisation)
-                            }
-                            isadded = 1
-                        }
-
-                        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onProviderEnabled(provider: String) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onProviderDisabled(provider: String) {
-                            TODO("Not yet implemented")
-                        }
-
-                    }
-            )
-
+            addLocation()
         }
     }
 
@@ -83,6 +44,50 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun addLocation(){
+        var isadded = 0
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        }
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                5000,
+                0F,
+                object : LocationListener {
+                    override fun onLocationChanged(location: Location) {
+                        if (isadded == 0){
+                            val db = Firebase.firestore
+
+                            val localisation = hashMapOf(
+                                    "Position" to location,
+                                    "Proprio" to 1
+                            )
+                            db.collection("Localisation")
+                                    .add(localisation)
+                        }
+                        isadded = 1
+                    }
+
+                }
+        )
+    }
+
+    val scope = CoroutineScope(Dispatchers.Main)
+
+    val firstCallTime = ceil(System.currentTimeMillis() / 60_000.0).toLong() * 60_000
+
+    val parentJob = scope.launch {
+        delay(firstCallTime - System.currentTimeMillis())
+        while (true) {
+            launch {
+                addLocation()
+            }
+            delay(60_000)
         }
     }
 }
