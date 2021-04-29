@@ -1,11 +1,21 @@
 package com.example.localtisatiotracker
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,8 +25,48 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            var isadded = 0
+
+            val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            }
+
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    5000,
+                    0F,
+                    object : LocationListener {
+                        override fun onLocationChanged(location: Location) {
+                            if (isadded == 0){
+                                val db = Firebase.firestore
+
+                                val localisation = hashMapOf(
+                                        "Position" to location,
+                                        "Proprio" to 1
+                                )
+                                db.collection("Localisation")
+                                        .add(localisation)
+                            }
+                            isadded = 1
+                        }
+
+                        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun onProviderEnabled(provider: String) {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun onProviderDisabled(provider: String) {
+                            TODO("Not yet implemented")
+                        }
+
+                    }
+            )
+
         }
     }
 

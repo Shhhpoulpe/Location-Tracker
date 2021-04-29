@@ -43,6 +43,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     // Firestore
     implementation 'com.google.firebase:firebase-firestore:22.1.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 
     // Other Firebase/Play services deps
     implementation 'com.google.firebase:firebase-auth:20.0.4'
