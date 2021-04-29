@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "700475955988",
+    "project_id": "localisation-tracker",
+    "storage_bucket": "localisation-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700475955988:android:763f06c768f335c1fe8001",
+        "android_client_info": {
+          "package_name": "com.example.localtisatiotracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700475955988-181608di853i10oud27t8plnk4hq65af.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.localtisatiotracker",
+            "certificate_hash": "0a6d7c807946af15b43a45d078435c871359b5b1"
+          }
+        },
+        {
+          "client_id": "700475955988-bavhb4nkhkbkm1im6ks9ls3aa55mnga9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX5osm8XvlDjkeN5ivmY43i_2-BZkEOBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700475955988-bavhb4nkhkbkm1im6ks9ls3aa55mnga9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
