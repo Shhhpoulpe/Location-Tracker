@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "700475955988-qcta1dsefk21ne9cb17tucuusckevgr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.localtisatiotracker",
+            "certificate_hash": "8bdd510e82b08ec6692da728dee354f23536522f"
+          }
+        },
+        {
           "client_id": "700475955988-bavhb4nkhkbkm1im6ks9ls3aa55mnga9.apps.googleusercontent.com",
           "client_type": 3
         }

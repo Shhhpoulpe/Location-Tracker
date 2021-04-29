@@ -1,73 +1,37 @@
 package com.example.localtisatiotracker
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.app.ActivityCompat
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.example.localtisatiotracker.Fragments.Localisation_data
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Initialize Firebase Auth
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar_main))
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            var isadded = 0
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar_main)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.title = ""
 
-            val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        val tabLayout: TabLayout = findViewById(R.id.tab_layout)
+        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
 
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        viewPagerAdapter.addFragment(Localisation_data(),"Localisation Data")
 
-            }
+        viewPager.adapter = viewPagerAdapter
+        tabLayout.setupWithViewPager(viewPager)
 
-            locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    5000,
-                    0F,
-                    object : LocationListener {
-                        override fun onLocationChanged(location: Location) {
-                            if (isadded == 0){
-                                val db = Firebase.firestore
-
-                                val localisation = hashMapOf(
-                                        "Position" to location,
-                                        "Proprio" to 1
-                                )
-                                db.collection("Localisation")
-                                        .add(localisation)
-                            }
-                            isadded = 1
-                        }
-
-                        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onProviderEnabled(provider: String) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onProviderDisabled(provider: String) {
-                            TODO("Not yet implemented")
-                        }
-
-                    }
-            )
-
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -85,4 +49,36 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    internal class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager)
+    {
+        private val fragments: ArrayList<Fragment>
+
+        private val titles: ArrayList<String>
+
+        init {
+            fragments = ArrayList<Fragment>()
+            titles = ArrayList<String>()
+        }
+
+        fun addFragment(fragment: Fragment, title: String)
+        {
+            fragments.add(fragment)
+            titles.add(title)
+        }
+
+        override fun getCount(): Int {
+            return fragments.size
+        }
+
+        override fun getPageTitle(i: Int): CharSequence? {
+            return titles[i]
+        }
+
+        override fun getItem(position: Int): Fragment {
+            return fragments[position]
+        }
+
+    }
+
 }
