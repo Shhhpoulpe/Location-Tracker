@@ -13,6 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.example.localtisatiotracker.Fragments.Localisation_data
+import com.example.localtisatiotracker.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
@@ -24,12 +31,14 @@ class MainActivity : AppCompatActivity() {
     private val locationPermissionCode = 2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        val binding = ActivityMainBinding.inflate(layoutInflater)
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        binding.fab.setOnClickListener { view ->
             addLocation()
         }
+
+        setContentView(binding.root)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
